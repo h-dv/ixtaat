@@ -4,6 +4,7 @@ nbbuild/
 dist/
 nbdist/
 node_modules/
+
 nbactions.xml
 
 nb-configuration.xml
