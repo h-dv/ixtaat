@@ -1,0 +1,375 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>.:: ixtaat tests::.</title>
+    <link rel="stylesheet" href="lib/qunit.css">
+    <link rel="stylesheet" href="../dist/stylesheets/ixtaat.min.css">
+    <link rel="stylesheet" href="../dist/stylesheets/ixtaat.material.min.css">
+    <script src="../dist/javascripts/ixtaat.js" config="path:'../',debug:false"></script>
+    <script src="../dist/javascripts/ixtaat.material.js"></script>
+    <script src="lib/qunit.js"></script>
+</head>
+<body>
+<div id="qunit">
+</div>
+<div id="test"></div>
+<div id="testArea"></div>
+
+<script>
+
+    test("ixtaat inheritance", function () {
+
+        var S = Class.define({
+            b: "test"
+        });
+
+        var T = S.define({
+            b: "test2"
+        });
+
+        var t = new T();
+        var s = new S();
+
+        equal(s.b, "test", "simple constructor");
+        equal(t.b, "test2", "simple inheritance");
+
+    });
+
+    test("ixtaat mixin", function () {
+
+        var M = Class.define({
+            a: "mixinTest",
+            initializeInclude: function () {
+                this.test = "abc";
+            }
+
+        });
+
+        var S = Class.define({
+            include: M,
+            b: "test"
+        });
+
+        var s = new S();
+        equal(s.a, "mixinTest", "self mixin");
+
+
+        var T = S.define({
+            b: "test2"
+        });
+
+
+        var t = new T();
+        equal(t.a, "mixinTest", "inherited mixin");
+        equal(t.test, "abc", "inherited mixin with initializer 2");
+
+        var U = T.define({
+            a: "test2"
+        });
+
+        var u = new U();
+        equal(u.a, "test2", "inherited overridden mixin");
+        equal(u.test, "abc", "inherited overridden mixin with initializer");
+
+
+        var Mo = Class.define({
+            mo: "otherMixin"
+        })
+
+        var O = Class.define({
+            b: "test"
+        });
+
+        var N = O.define({
+            c: "mixinTest",
+            include: [M, Mo]
+        });
+
+        var P = O.define({
+            c: "mixinTest",
+        });
+
+
+        var n = new N();
+        equal(n.a, "mixinTest", "inherited new mixin");
+        equal(n.test, "abc", "inherited new mixin with initializer");
+        equal(n.mo, "otherMixin", "inherited new mixin with initializer ");
+
+        var o = new O();
+
+        equal(o.a, undefined, "mixin is visible on parent");
+        equal(o.test, undefined, "inherited mixin with initializer is visible on parent");
+
+        var p = new P();
+        equal(p.a, undefined, "mixin is visible on family");
+        equal(p.test, undefined, "inherited mixin with initializer is visible on family");
+
+
+    });
+
+    test("advanced ixtaat inheritance", function () {
+
+        var T = Class.define({
+            b: "test",
+            initialize: function (o) {
+                Ixtaat.extend(this, o);
+            }
+        });
+
+        var t = new T({
+            b: "test2"
+        });
+
+        var t2 = new T({
+            b: "test3"
+        });
+
+        var U = T.define({
+            b: "test4"
+        });
+
+        var V = T.define({
+            b: "test5"
+        });
+
+        var u = new U({});
+
+        var v = new V({});
+
+        var u1 = new U({
+            b: "test6"
+        });
+
+        equal(t.b, "test2", "set property in constructor");
+        equal(t2.b, "test3", "set property in constructor");
+
+        equal(u.b, "test4", "set property in extended Class");
+        equal(v.b, "test5", "set property in extended Class");
+        equal(u1.b, "test6", "set property in extended Class  constructor");
+
+    });
+
+    test("ixtaat observer", function () {
+
+
+        var res = "";
+
+        var T = Class.define({
+
+            include: Ixtaat.Observer,
+
+            b: "test",
+
+            events: {
+                check: [
+                    function () {
+                        res = res + "AbC123";
+                    }
+                ]
+            },
+
+            initialize: function (options) {
+                this.initializeObserver(options);
+            }
+        });
+
+        var t = new T();
+        t.fire('check');
+        equal(res, "AbC123", "simple Event");
+
+        //**********************************************************************************************************
+
+        res = "";
+        var t = new T({
+            events: {
+                check: [
+                    function () {
+                    res = res + "AbC123";
+                }
+                ]
+            }
+        });
+
+        t.fire('check');
+
+        equal(res, "AbC123AbC123", "simple Event  + constructor Event");
+
+        //**********************************************************************************************************
+
+        res = "";
+        var U = T.define({
+            events: {
+                check: [
+                    function () {
+                    res = res + "AbC123";
+                }
+                ]
+            }
+        })
+
+        var u = new U();
+
+        u.fire('check');
+
+        equal(res, "AbC123AbC123", "inherited Event ");
+
+        var X = T.define({
+            events: {
+                check: [
+                    function () {
+                    res = res + "DeF456";
+                }
+                ]
+            }
+        })
+
+        res = "";
+        var u = new U();
+
+        u.fire('check');
+
+        equal(res, "AbC123AbC123", "inherited Event ");
+
+        res = "";
+        var x = new X();
+
+        x.fire('check');
+
+        equal(res, "AbC123DeF456", "inherited Event ");
+
+
+        //**********************************************************************************************************
+
+        res = "";
+        var u = new U({
+                    events: {
+                        check: [
+                            function () {
+                            res = res + "XyZ";
+                        }
+                        ]
+                    }
+                }
+        );
+
+        u.fire('check');
+
+        equal(res, "AbC123AbC123XyZ", "inherited Event + constructor Event");
+
+
+        //**********************************************************************************************************
+
+    });
+
+    test("ixtaat default values", function () {
+
+
+        var res = "";
+
+        var T = Class.define({
+            defaults: {
+                a: 1,
+                b: {c: 7}
+            }
+        });
+
+        var t = new T();
+
+        equal(t.a, 1, "simple value");
+        equal(t.b.c, 7, "deep value");
+        t.a = 5;
+        t.b.c = 8;
+
+        equal(t.a, 5, "changed value");
+        equal(t.b.c, 8, "deep changed value");
+
+        var u = new T();
+
+        equal(u.a, 1, "simple value after change");
+        equal(u.b.c, 7, "deep value after change");
+
+    });
+
+
+    asyncTest("create and destroy 100 components", function (assert) {
+        var b = new Ixtaat.Widget.Button({
+            renderIn: "test",
+            caption: {innerText: 'testcreate and destroy'},
+            element: {
+                events: {
+                    click: [
+                        function () {
+                        var panel = Ixtaat.create({
+                            typeName: "m-card",
+                            renderIn: "testArea",
+
+                            appendChild: function (i) {
+                                var item = panel.addItem({
+                                    index: i,
+                                    typeName: "m-button",
+                                    caption: {innerText: 'testbutton'},
+                                    events: {
+                                        afterInitialize: [
+                                            function () {
+                                            var memoryEater = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                            Ixtaat.debug("test" + memoryEater);
+
+                                        },
+                                        ]
+                                    },
+                                    element: {
+                                        events: {
+                                            click: function () {
+                                                var memoryEater5 = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+                                                Ixtaat.debug("test");
+                                            }
+                                        }
+                                    }
+                                });
+                                return item;
+                            },
+
+                            closeChilds: function () {
+                                while (panel.items.length) {
+                                    var item = panel.items.pop();
+                                    item.close();
+                                }
+                            }
+                        });
+
+                        for (var i = 1; i < 500; i++) {
+//                window.setTimeout(function(){
+                            panel.appendChild(i).fire('click');
+//                }, 0);//document.setTimeout("", 100);;
+                        }
+
+                        ok(document.getElementById(panel.uuid), "panel exists")
+
+                        panel.close();
+
+                        ok(!document.getElementById(panel.uuid), "panel removed correct")
+                    }
+                    ]
+                }
+            }
+        });
+
+        for (var i = 1; i < 20; i++) {
+//    window.setTimeout(function(){
+            Ixtaat.triggerEvent(b.element, 'click');//.fire( "click" );
+//    }, 0);//document.setTimeout("", 100);;
+        }
+    });
+
+    //  });
+</script>
+
+
+</body>
+</html>

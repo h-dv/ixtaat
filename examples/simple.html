@@ -1,0 +1,49 @@
+<!doctype html>
+<head id=example" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <title>.:: ixtaat framework ::.</title>
+
+    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.min.css' type='text/css' media='all' />
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+<div id="main"></div>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="path:'dist/js/', debug: true"></script>
+<script>
+
+  var i = Ixtaat;
+
+  var test =i.create({
+
+    typeName: 'i-component',
+
+    templateHtml: '<div class="i-component">Hello <a href="#">World</a></div>',
+
+    templateSelectors: {
+      worldLink: 'a',
+      wrapIn: '.wrapIn'
+    },
+
+    renderIn: 'main',
+
+    worldLink:{
+      style: {
+        color: i.Colors.red
+      },
+      events: {
+        click: [
+        function(e)  {
+          this.worldLink.innerText = 'clicked!';
+          this.worldLink.style.color= i.Colors.green;
+          this.element.style.padding = "25px";
+        }
+       ]
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

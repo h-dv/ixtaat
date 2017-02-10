@@ -1,0 +1,140 @@
+
+
+//****************************************************************************************************
+// Definitions
+//****************************************************************************************************
+
+
+
+$blue-color:  #5075d7;
+$green-color: #5b7830;
+$red-color: #ec3302;
+$yellow-color: #f5ac32;
+
+
+$gray-1-color: #c1c5bf;
+$gray-2-color: #9da39b;
+$gray-3-color: #7a8078;
+$gray-4-color: #575c55;
+$gray-5-color: #363933;
+$gray-6-color: #181917;
+
+
+$main-color: $blue-color ;
+$main-inverse-color: #f8f8f8 ;
+
+$base-text-color:  $gray-6-color;
+
+
+$form-color:  $gray-5-color;
+$form-line-color:  #ffffff;
+$form-active-color:  $gray-6-color;
+$form-line-active-color:  $main-color;
+$form-inactive-color:  $gray-3-color;
+$form-line-inactive-color:  $gray-3-color;
+$form-background-color:  lighten($gray-1-color,15);//#f1f4fc;//lighten($yellow-color,30);//lighten($gray-1-color, 20);
+
+//$card-header-color : lighten($main-color,10);
+//$card-header-inverse-color : #ffffff;
+$card-header-color : lighten($main-color,50);
+$card-header-inverse-color : darken($main-color,10);
+
+$card-color : #ffffff;
+$card-inverse-color : $gray-6-color;
+
+$tab-header-color : $main-color;
+$tab-header-inverse-color : #ffffff;
+
+
+$viewport-header-color : darken($main-color,10);
+$viewport-header-inverse-color : #ffffff;
+
+$viewport-footer-color : $gray-1-color;
+$viewport-footer-inverse-color : $gray-6-color;
+
+$colors:  (
+                ("blue" , $blue-color),
+                ("green" , $green-color),
+                ("red", $red-color),
+                ("yellow", $yellow-color),
+                ("gray-1", $gray-1-color),
+                ("gray-2", $gray-2-color),
+                ("gray-3", $gray-3-color),
+                ("gray-4", $gray-4-color),
+                ("gray-5", $gray-5-color),
+                ("gray-6", $gray-6-color),
+                ("main", $main-color),
+                ("main-inverse", $main-inverse-color),
+                ("base-text", $base-text-color),
+                ("main-inverse", $main-inverse-color),
+                ("form", $form-color),
+                ("form-line", $form-line-color),
+                ("form-active", $form-active-color),
+                ("form-line-active", $form-line-active-color),
+                ("form-inactive", $form-inactive-color),
+                ("form-line-inactive", $form-line-inactive-color),
+                ("form-background", $form-background-color),
+                ("card-header", $card-header-color),
+                ("card-header-inverse", $card-header-inverse-color),
+                ("card-color", $card-color),
+                ("card-inverse-color", $card-inverse-color),
+);
+
+
+
+
+@each $kvp in $colors {
+
+  .background-color-#{nth($kvp, 1)} {
+    background-color: #{nth($kvp, 2)}
+  }
+
+  .color-#{nth($kvp, 1)} {
+    color: #{nth($kvp, 2)}
+  }
+
+  .border-color-#{nth($kvp, 1)} {
+    color: #{nth($kvp, 2)}
+  }
+}
+
+//$main-font: "Roboto"; $main-font-fixed: "Roboto Mono";
+$main-font: "Ubuntu"; $main-font-fixed: "Ubuntu Mono";
+
+// grid variables
+$grid-columns: 12;
+$grid-max-width: 65em;
+
+
+
+//****************************************************************************************************
+// Assignments
+//****************************************************************************************************
+
+$ms-base: 1em;
+$ms-ratio: $golden;
+
+
+$breakpoints: (
+  'xsmall' : ( min-width:  600px ),
+  'small'  : ( min-width:  767px ),
+  'medium' : ( min-width:  992px ),
+  'large'  : ( min-width: 1200px ),
+  'xlarge' : ( min-width: 1900px )
+);
+
+@mixin respond-to($name) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $name) {
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $name))} {
+      @content;
+    }
+  }
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+

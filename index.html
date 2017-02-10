@@ -1,0 +1,104 @@
+<!doctype html>
+<head id="example" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <title>.:: ixtaat framework ::.</title>
+
+    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.min.css' type='text/css' media='all' />
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+<div id="main"></div>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="path:'dist/js/', debug: true"></script>
+<script>
+
+  var i=Ixtaat;
+
+  var links = [
+    { name : 'Simple' ,
+      destination: '/examples/simple.html',
+      description: 'a simple example'
+    },
+    { name : 'Wrapper' ,
+      destination: '/examples/wrapIn.html',
+      description: 'a example with wrapped Content'
+    },
+  ]
+
+  var cCard = i.Widget.Composite.define({
+	typeName: 'c-card',
+	templateHtml: '<div class="m-card"><h3 class="m-header"></h3><div class="i-item-container"></div><div class="m-footer"></div></div>',
+	templateSelectors: {
+		header: " .m-header",
+		itemContainer: " .i-item-container",
+		footer: " .m-footer"
+	},
+	element: {
+		style: {
+			margin: "3em"
+		}
+	},
+	header: {
+		style: {
+			color: i.Colors.blue
+		}
+	}
+	
+  });
+
+  
+  var cLink = i.Widget.Component.define({
+    typeName : 'c-link',
+    templateHtml : '<div><a href="#" target="_blank"></a><br/><div class="description"></div></div>',
+    templateSelectors : {
+      link: 'a',
+      description : '.description'
+    },
+    link: {
+      style: {
+        fontWeight: 700
+      },
+    },
+    description:  {
+      style: {
+        color: '#555',
+        paddingBottom: '1em'
+      }
+    }
+  })
+
+  var card = i.create({
+
+    typeName: 'c-card',
+
+    renderIn: 'main',
+    itemContainer: {
+      style: {
+        flexDirection: 'column'
+      }
+    },
+    header: {
+        textContent :'ixtaat component system'
+    },
+
+    items: []
+  });
+
+  for(var l in links) {
+    card.addItem({
+      typeName:'c-link',
+      link: {
+        textContent: links[l].name,
+        href :  links[l].destination
+      },
+      description: {
+        textContent: links[l].description,
+      }
+    })
+  }
+
+</script>
+
+</body>
+</html>

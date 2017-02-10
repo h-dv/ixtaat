@@ -1,0 +1,64 @@
+/****************************************************************************************************************
+* Grid System
+*
+* http://webdesign.tutsplus.com/tutorials/a-simple-responsive-grid-made-even-better-with-sass--cms-21540
+*
+* <section class="w-grid-wrapper">
+*		<div class="w-grid-row">
+*     <div class="w-grid-column-3">3</div>
+*     <div class="w-grid-column-6">6</div>
+*     <div class="w-grid-column-3">3</div>
+*   </div>
+* </section>
+*
+*/
+
+%clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+img {
+  width: auto;
+  max-width: 100%;
+  height: auto !important;
+  flex-shrink:0;
+  flex-basis: auto;
+}
+
+
+.w-grid-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.w-grid-wrapper, .w-grid-row {
+  @extend %clearfix;
+}
+
+[class*='w-grid-column-'] {
+  float: left;
+  width: 100%;
+  min-height: 1px;
+}
+
+@include respond-to (medium) {
+  .w-grid-wrapper {
+    width: 100%;
+    max-width: $grid-max-width;
+//    flex-basis: $grid-max-width;
+  }
+  @for $i from 1 through $grid-columns {
+    .w-grid-column-#{$i} {
+      width: 100% / $grid-columns * $i;
+//      flex-basis: 100% / $grid-columns * $i;
+    }
+  }
+}

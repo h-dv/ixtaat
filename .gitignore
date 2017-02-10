@@ -1,0 +1,15 @@
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+node_modules/
+nbactions.xml
+
+nb-configuration.xml
+nbproject/*
+.nb-gradle/
+.idea/
+.sass-cache/
+
+doc/*
