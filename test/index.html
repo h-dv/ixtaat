@@ -5,9 +5,7 @@
     <title>.:: ixtaat tests::.</title>
     <link rel="stylesheet" href="lib/qunit.css">
     <link rel="stylesheet" href="../dist/stylesheets/ixtaat.min.css">
-    <link rel="stylesheet" href="../dist/stylesheets/ixtaat.material.min.css">
-    <script src="../dist/javascripts/ixtaat.js" config="path:'../',debug:false"></script>
-    <script src="../dist/javascripts/ixtaat.material.js"></script>
+    <script src="../dist/javascripts/ixtaat.js" config="debug:false"></script>
     <script src="lib/qunit.js"></script>
 </head>
 <body>
@@ -17,6 +15,25 @@
 <div id="testArea"></div>
 
 <script>
+
+    var i=Ixtaat;
+
+    var iButton  = i.Widget.Component.define({
+	    typeName: 'i-button',
+	    templateHtml: '<button class="i-button" tabindex="0">Button</button >',
+
+    });
+
+    var iCard = i.Widget.Composite.define({
+	    typeName: 'i-card',
+	    templateHtml: '<div class="i-card"><h3 class="i-header"></h3><div class="i-item-container"></div><div class="i-footer"></div></div>',
+	    templateSelectors: {
+		    header: " .i-header",
+		    itemContainer: " .i-item-container",
+		    footer: " .i-footer"
+	    }
+    });
+
 
     test("ixtaat inheritance", function () {
 
@@ -293,7 +310,7 @@
 
 
     asyncTest("create and destroy 100 components", function (assert) {
-        var b = new Ixtaat.Widget.Button({
+        var b = new iButton({
             renderIn: "test",
             caption: {innerText: 'testcreate and destroy'},
             element: {
@@ -301,13 +318,13 @@
                     click: [
                         function () {
                         var panel = Ixtaat.create({
-                            typeName: "m-card",
+                            typeName: "i-card",
                             renderIn: "testArea",
 
                             appendChild: function (i) {
                                 var item = panel.addItem({
                                     index: i,
-                                    typeName: "m-button",
+                                    typeName: "i-button",
                                     caption: {innerText: 'testbutton'},
                                     events: {
                                         afterInitialize: [

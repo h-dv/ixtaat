@@ -10,7 +10,7 @@
 
 <body>
 <div id="main"></div>
-<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="path:'dist/js/', debug: true"></script>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="debug: true"></script>
 <script>
 
   var i=Ixtaat;
@@ -50,7 +50,7 @@
   
   var cLink = i.Widget.Component.define({
     typeName : 'c-link',
-    templateHtml : '<div><a href="#" target="_blank"></a><br/><div class="description"></div></div>',
+    templateHtml : '<div><a class="ripple" href="#" target="_blank"></a><br/><div class="description"></div></div>',
     templateSelectors : {
       link: 'a',
       description : '.description'
@@ -90,7 +90,15 @@
       typeName:'c-link',
       link: {
         textContent: links[l].name,
-        href :  links[l].destination
+        href :  links[l].destination,
+        events: {
+        	click: [
+              function(ev){
+        		return false;
+              }
+            ]
+        }
+
       },
       description: {
         textContent: links[l].description,
