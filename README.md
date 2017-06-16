@@ -12,14 +12,14 @@ Take a look at the examples.
 there is a global AMD-Loader registered:
 
 ```javascript
-loader.define('myapp', ['ixtaat.core'], function(core) {
+loader.define('myapp', ['ixtaat/core'], function(core) {
 ...
 })
 ```
 and 
 
 ```javascript
-loader.require(['ixtaat.core'], function(core) {
+loader.require(['ixtaat/core'], function(core) {
 ...
 })
 ```
