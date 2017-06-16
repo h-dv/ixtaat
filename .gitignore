@@ -4,8 +4,9 @@ nbbuild/
 dist/
 nbdist/
 node_modules/
-
+dist/
 nbactions.xml
+external/
 
 nb-configuration.xml
 nbproject/*

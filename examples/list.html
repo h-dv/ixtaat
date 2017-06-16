@@ -1,0 +1,117 @@
+<!doctype html>
+<head id="example" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <title>.:: ixtaat framework ::.</title>
+
+    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.min.css' type='text/css' media='all'/>
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+<div id="main"></div>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="jsPath:'../dist/javascripts/', cssPath:'../dist/stylesheets/', debug: true"></script>
+
+<script>
+
+loader.require(['ixtaat/core', 'ixtaat/widget'], function(core, widget) {
+
+	var itemStyle = { border: "1px solid", padding: "1em", margin: "1em", background: '#2588d4'} ;
+
+	var test = core.create({
+
+		typeName: 'i-composite',
+
+		renderIn: 'main',
+
+		itemContainer: {
+			style: {
+				margin: "0 0 0 1em",
+        flexDirection: 'row'
+			}
+		},
+
+		items: [
+			{
+				typeName: 'i-composite',
+				items: [
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 1', style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 2' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 3' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 4' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 5' , style: itemStyle }
+					},
+				]
+			},
+			{
+				typeName: 'i-composite',
+				dragDropActive: true,
+				items: [
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 1', style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 2' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 3' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 4' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 5' , style: itemStyle }
+					},
+				]
+			},
+			{
+				typeName: 'i-composite',
+				items: [
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 1', style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 2' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 3' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 4' , style: itemStyle }
+					},
+					{
+						typeName: 'i-component',
+						element: { textContent: 'Test 5' , style: itemStyle }
+					},
+				]
+			},
+		]
+	});
+})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,842 @@
+@import "compass";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/animation";
+@import "compass/css3/appearance";
+@import "compass/css3/transition";
+
+//@import '~modularscale-sass/stylesheets/modularscale';
+@import 'modularscale';
+@import "../variables.scss";
+
+
+div{
+  outline: none;
+}
+
+input, textarea {
+  padding: 0.1em 0.3em;
+  outline: none;
+  border: 1px solid $form-line-color;
+//  font-weight: bold;
+  font-family: $main-font-fixed;
+}
+
+input:focus, textarea:focus {
+  background-color: rgba($form-active-background-color, .5);
+  transition: all 0.7s ease-in-out;
+}
+
+
+
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+
+  font-weight: 400;
+  src: url(./MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url(./MaterialIcons-Regular.woff2) format('woff2'),
+  url(./MaterialIcons-Regular.woff) format('woff'),
+  url(./MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: ms(1);  /* Preferred icon size */
+  display: inline-block;
+//  width: ms(1);
+//  height: ms(1);
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************************************************************************
+* Spinner
+*/
+
+
+
+
+
+
+.m-spinner-wrapper {
+    position: fixed;
+    top: 33%;
+    left: 33%;
+    width: 33%;
+    height: 33%;
+    z-index: 1000;
+}
+.m-spinner {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #3498db;
+    -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+    animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    z-index: 10000;
+}
+ 
+.m-spinner:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #e74c3c;
+    -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+      animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    z-index: 10000;
+}
+ 
+.m-spinner:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f9c922;
+    -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+      animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    z-index: 10000;
+      
+}
+ 
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+
+
+
+
+
+/****************************************************************************************************************
+* Components
+*/
+
+.i-item-container {
+  flex:1 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  > * {
+    flex:1;
+    align-self: stretch;
+  }
+}
+
+
+.dragactive {
+  opacity:0.5;
+}
+
+.draggable {
+  margin-left: 2em;
+}
+
+.draggable:before {
+  content: "\2980";
+  display: inline-block;
+  color: #000;
+  background: inherit;
+  opacity: 0.5;
+//  border: solid 1px white;
+//  padding: 2px;
+  margin-left: -0.3em;//-1em 1em 1em -1em;
+  margin-top: -0.3em;//-1em 1em 1em -1em;
+  margin-right: 0.5em;//-1em 1em 1em -1em;
+
+  //u2980
+}
+
+
+.m-viewport {
+  display:flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  margin: 0;
+  height:100vh;
+  min-height:100vh;
+  max-height:100vh;
+
+  width:100vw;
+  min-width:100vw;
+  max-width:100vw;
+
+  .m-viewport-header {
+    color: $viewport-header-inverse-color;
+    background-color: $viewport-header-color;
+    padding: .5em .7em;
+  }
+
+  .m-viewport-left {
+    background-color: #3498db;
+  }
+
+  .m-viewport-right {
+    background-color: #e74c3c;
+  }
+
+  .m-viewport-footer {
+    position: fixed;
+    bottom:0;
+    width:100vw;
+    min-width:100vw;
+    color: $viewport-footer-inverse-color;
+    background-color: $viewport-footer-color;
+  }
+
+}
+
+
+
+//******************************************************************************************************************
+//  Ripple Animation
+//******************************************************************************************************************
+.rippleffect {
+  display: inline-block;
+  position: relative;
+  user-select: none;
+  border: 0;
+//  background: white;
+  overflow: hidden;
+  cursor: pointer;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+
+  @for $i from 0 to 5 {
+    &:nth-child(#{$i + 1}) {
+      .ripple {
+        background: rgba(black,0.1);
+      }
+      @if lightness($main-color) < 40% {
+        color: white;
+        .ripple {
+          background: rgba(white,0.1);
+        }
+      }
+    }
+  }
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events:none;
+  transform: translate(-50%,-50%);
+  animation: scale-in .4s ease-in-out;
+  transition: opacity .4s .2s ease-out;
+}
+
+@keyframes scale-in {
+  from {
+    transform: translate(-50%,-50%) scale(0);
+  }
+  to {
+    transform: translate(-50%,-50%) scale(1);
+  }
+}
+
+//***************************************************************************************
+// Button
+//***************************************************************************************
+.m-button {
+  border: none;
+  outline:none;
+  cursor: pointer;
+  background: $main-color;
+  color: white;
+  padding: .5em 1.2em;
+  border-radius: .22em;
+  font-size: ms(0);
+  box-shadow: none;
+  //  box-shadow: 0 0.1em 0.1em rgba(0,0,0,0.4),0 -0.1em 0.1em rgba(0,0,0,0.2);
+}
+
+.m-button:hover {
+  box-shadow: 0 0.2em 0.2em rgba(0,0,0,0.4),0 -0.1em 0.2em rgba(0,0,0,0.2);
+  transition: all 0.3s ease-in-out ;
+}
+
+.m-button:focus {
+  box-shadow: 0 0.2em 0.2em rgba(0,0,0,0.4),0 -0.1em 0.2em rgba(0,0,0,0.2);
+  background: saturate($main-color,20%);
+  transition: all 0.3s ease-in-out ;
+}
+
+.m-button.circle {
+  border-radius: 50%;
+}
+
+.m-button.square, .m-button.circle {
+  //  padding: 0;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  margin: 0;
+  > * {
+    vertical-align: middle;
+  }
+}
+
+
+
+//ul {   display: none}
+
+@include respond-to (medium) {
+  ul {display: block}
+}
+
+.shadow {
+  box-shadow: 0 0.2em 0.8em rgba(0,0,0,0.4),0 -0.1em 0.3em rgba(0,0,0,0.2);
+}
+
+.m-card {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+
+  >.m-header {
+    width: 100%;
+    padding: 0.2em 0.5em;
+    font-weight: 200;
+    margin: 0;
+    font-size: ms(1.2);
+    background: $card-header-color;
+    color : $card-header-inverse-color;
+  }
+
+  > .i-item-container {
+    padding: 0.7em 1em 0.3em 1em ;
+    overflow-x:hidden;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: inherit;
+    align-items: flex-start;
+  }
+  background: $card-color;
+}
+
+.m-overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  padding: 0;
+  margin: 0;
+  height:100vh;
+  min-height:100vh;
+
+  width:100vw;
+  min-width:100vw;
+  z-index: 999;
+  background-color: rgba(0,0,0,0.8);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/**************************
+  Forms
+*/
+
+.m-fieldset {
+  border: none;
+  width: 100%;
+  padding: 0.3em 0 ;
+  min-width: 20em;
+
+  >legend {
+    width: 100%;
+    border: none;
+    padding: 1em 0 0 0;
+    .m-fieldset-legend {
+      font-weight: 400;
+      font-size: ms(1);
+      color: $form-fieldset-color;
+    }
+  }
+
+  .i-item-container {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+    width: 100%;
+  }
+}
+
+.m-editor {
+  background-color:  #fff;
+  padding: 0.3em 0.7em;
+
+  .m-editablecontent {
+    outline: none;
+    background-color:  #fff;
+    min-height: 3em;
+  }
+
+  .m-editcontrols {
+    i {
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none;   /* Chrome/Safari/Opera */
+      -khtml-user-select: none;    /* Konqueror */
+      -moz-user-select: none;      /* Firefox */
+      -ms-user-select: none;       /* IE/Edge */
+      user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+    }
+
+    i {
+      width: 1.33em;
+      height: 1.33em;
+      margin: 0 0.3em 0 0;
+    }
+  }
+}
+
+
+
+
+
+.m-field {
+
+  > .m-input-label {
+//    font-weight: 400;
+//    font-size: .83em;
+//    font-size: ms(0);
+    color: $form-color;
+    vertical-align: top;
+  }
+
+  > .m-input > input, > .m-input > textarea{
+//    font-weight: 600;
+    //ffont-size: ms(1);
+    font-size: ms(0);
+    padding: 0.2em 0.3em;
+  }
+
+  > .m-input > input:focus, .m-input:focus, > .m-input > textarea:focus {
+    outline: none;
+  }
+
+}
+
+/*
+.m-checkbox {
+  > .m-input {
+    width : auto;
+    content: '\2714';
+    position: relative;
+    left: 0;
+  }
+*/
+
+.m-row {
+  display: table-row;
+}
+
+.m-cell {
+  display: table-cell;
+}
+
+.m-form {
+  width:100%;
+  > form {
+    padding: 0;
+    color: $form-color;
+    background: $form-background-color;
+    width: 100%;
+    > .i-item-container {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      margin-right: -1em;
+      > * {
+        margin-right: 1em;
+      }
+    }
+  }
+
+  .m-formfooter {
+    > .i-item-container {
+      flex-direction: row;
+      width: 100%;
+      border-spacing: 0;
+      margin: 0 1em 1em 1em;
+      .m-button {
+        margin-right: 0.7em;
+      }
+    }
+  }
+}
+.m-fieldset {
+  .m-formfooter {
+    > .i-item-container {
+      margin: 0.5em 1em 1em 0;
+    }
+  }
+}
+
+.m-field {
+  border: 1px solid $form-line-color;
+
+  > .m-input-selector {
+    color: $main-color;
+    display : inline-flex;
+    vertical-align: bottom;
+    margin-left: 0.3em;
+    > i {
+      font-size: 1.3em;
+      color: $form-action-color;
+    }
+  }
+
+  > .m-input-label, > .m-input-selector, > .m-input {
+//    padding: 0.3em 0 0 0;
+//    border-bottom: 1px solid $form-line-color;
+  }
+
+  > .m-input-label {
+    padding-right: .7em;
+    background-color: inherit;
+    border-bottom: 1px solid transparent;
+    transition: border 0.7s ease-in-out;
+  }
+
+  > .m-input-label.focused {
+    margin-right: 0;
+    margin-left: auto;
+    border-bottom: 1px solid $form-line-color;
+    transition: border  0.7s ease-in-out;
+    //      background-color: #5fc1e8;
+  }
+
+  > .m-input {
+    border: 1px solid $form-line-color;
+    border-radius: 0.2em;
+    background: #fff;
+    > input, >textarea {
+//      font-weight: bold;
+      width: 100%;
+      background: transparent;
+//      padding: 0;
+      border: none;
+      font-family: $main-font-fixed;
+//      font-size: 1.1em;
+    }
+    transition: all 0.3s ease-in-out;
+  }
+
+
+  > .m-input.focused {
+//    border: 1px solid $form-line-active-color;
+    background-color: rgba($form-active-background-color, .5);
+    transition: border  0.7s ease-in-out;
+  }
+}
+
+.m-field.focused {
+  color: $form-active-color;
+  > .m-input, > .m-input-label, > .m-input-selector, > .m-input > input {
+    color: $form-active-color;
+  }
+}
+
+.m-checkbox {
+  > .m-input {
+    position:relative;
+    border: none;
+    background: inherit;
+    transition: border 0.3s ease-in-out;
+//    line-height: 1.3em;
+//    font-size: 1.1em;
+
+    input[type=checkbox] {
+      opacity: 0;
+      font-size: 1.1em;
+      line-height: 1.1em;
+    }
+
+    .checkhelper::before {
+      background-color: #fff;; 
+      border: 1px solid $form-line-color;
+      border-radius: 0.2em;
+      display: block;
+      position: absolute;
+      top: -0.1em;
+      left: 0;
+      width: 1.2em;
+      font-size: 1.1em;
+      content: "\00a0"; 
+      text-align: center;
+      color: $form-color;
+    }
+    input[type=checkbox] ~ .checkhelper::before {
+      //content: "\2610";//"\25CE";;
+      color: $form-line-color;
+    }
+    input[type=checkbox]:checked ~ .checkhelper::before {
+      //content: "\2612";//"\25C9";
+      content: "✓"; 
+      color: $form-color;
+    }    
+  }
+  > .m-input.focused {
+    background-color:  $form-background-color;
+    input[type=checkbox]:checked ~ .checkhelper::before {
+      background-color: rgba($form-active-background-color, .5);
+   }
+//    border-bottom: 1px solid $form-line-color;
+  }
+}
+
+.m-transition-fadeout {
+  opacity: 0;
+  transition:   opacity 0.5s ease;
+}
+
+.m-transition-fadeout-fast {
+  opacity: 0;
+  transition:   opacity 0.2s ease;
+}
+
+.m-transition-fadein {
+  opacity: 1;
+  transition:   opacity 0.5s ease;
+}
+
+.m-transition-fadein-fast {
+  opacity: 1;
+  transition:   opacity 0.2s ease;
+}
+
+
+/****************************************************
+  Tab
+*****************************************************/
+
+.m-tab-container {
+  display:flex;
+  flex-direction: column;
+}
+.m-tab-container, .m-tab-container .m-tab-header-wrapper,.m-tab-container .i-item-container {
+
+}
+
+.m-tab-header-scrollbar {
+  display: block;
+  flex: unset;
+  margin: 0;
+  padding: 0;
+  background: $tab-header-color;
+  .m-tab-header-wrapper {
+    margin:0;
+    flex: unset;
+    margin-top: 0.5em;
+//    border-top: 0.22em solid $tab-header-color;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    padding:0;
+    .i-item-container {
+//      width: 999999px;
+//      height: ms(1) + 0.1em;
+      display: block;
+      flex: unset;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      padding: 0;
+      margin:0;
+    }
+  }
+}
+
+.m-tab-item-header {
+  display: inline-block;
+  align-self: unset;
+  flex-shrink: 0;
+  flex: unset;
+  white-space: nowrap;
+  border: none;
+  outline:none;
+  cursor: pointer;
+  padding: .5em 1.7em .7em;
+//  border-top-right-radius: .33em;
+// border-top-left-radius: .33em;
+  margin-right: 0.1em;
+  font-size: ms(0);
+  text-transform: uppercase;
+  font-weight: 100;
+
+  margin-bottom: -0.3em;
+
+  .close-button {
+    vertical-align: bottom;
+    cursor: pointer;
+    margin: 0 -0.8em 0 0.3em;
+  }
+}
+
+.m-tab-item-header:hover {
+  box-shadow: 0 0.3em 0.3em rgba(0,0,0,0.4),0 -0.2em 0.3em rgba(0,0,0,0.2);
+  transition: all 0.3s ease-in-out ;
+}
+
+.m-tab-item-header:focus {
+//  background: saturate($tab-header-color,20%);
+  color: $tab-header-color;
+  background: $tab-header-inverse-color;
+  transition: all 0.3s ease-in-out ;
+}
+
+
+
+
+.m-tab-item-header.m-tab-uncloseable {
+  .close-button {
+    display:none
+  }
+}
+
+.m-active-tab-item-header {
+  z-index: 3;
+  //  background-color:  $tab-header-color;
+  //  color: $tab-header-inverse-color;
+  box-shadow: 0.1em 0 0.1em rgba(0,0,0,0.1),-0.1em 0 0.1em rgba(0,0,0,0.2);
+  background-color:  $tab-header-inverse-color;
+  color: $tab-header-color;
+  .caption, .close-button {
+//    color: $tab-header-inverse-color;
+    color: $tab-header-color;
+  }
+  .caption {
+    font-size: ms(0);
+  }
+}
+
+
+.m-inactive-tab-item-header {
+  z-index: 2;
+  box-shadow: -0.1em 0 0.1em rgba(0,0,0,0.1);
+//  background-color: $tab-header-inverse-color;
+//  color: $tab-header-color;
+  background-color: $tab-header-color;
+  color: $tab-header-inverse-color;
+  .caption, .close-button {
+    color: $tab-header-inverse-color;
+//    color: $tab-header-color;
+  }
+  .caption{
+    font-size: ms(0);
+      }
+}
+
+.m-inactive-tab-item-content {
+  display: none;
+}
+
+.m-active-tab-item-content {
+  flex:1 100%;
+  display: flex ;
+  flex-direction: column;
+}

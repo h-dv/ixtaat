@@ -1,0 +1,204 @@
+<!doctype html>
+<head id="example" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <title>.:: ixtaat framework ::.</title>
+
+    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.min.css' type='text/css' media='all'/>
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+<div id="main"></div>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="jsPath:'../dist/javascripts/', cssPath:'../dist/stylesheets/', debug: true"></script>
+<script>
+
+loader.require(['ixtaat/core', 'ixtaat/widget', 'ixtaat/material'], function(core) {
+
+	var test = core.create({
+
+		typeName: 'm-form',
+
+		renderIn: 'main',
+
+        /*    events: {
+	    afterRender: [
+			function() {
+
+				var  l = $i.create({
+					typeName: 'm-formfooter',
+					items: [
+					{
+						typeName: 'm-button',
+						element: {
+							events: {
+								click: [function () {
+									Ixtaat.info("login clicked!");
+								}]
+							},
+							textContent: 'login'
+						}
+					},
+					{
+						typeName: 'm-button',
+						element: {
+							textContent: 'cancel',
+							events: {
+								click: [
+									function () {
+										ovl.close('m-transition-fadeout', 500);
+										startApp();
+									}
+								]
+							}
+						}
+					}
+				]
+				});
+
+        l.render(this.footer)
+			}
+			]
+    },
+*/
+		itemContainer: {
+			style: {
+				margin: "0 0 0 1em"
+			}
+		},
+		items: [
+			{
+				typeName: 'm-tab-container',
+				tabs: [
+					{
+						typeName: 'm-fieldset',
+            caption: 'test1',
+						closeable: false,
+
+            legend: {
+	  				  textContent: 'Testeintrag'
+            },
+				  items: [
+					{
+						typeName: 'm-field',
+						name: "mandant ",
+						labelText: 'Mandant',
+						events: {
+							ready: [
+								function () {
+									this.input.focus();
+								}
+							]
+						},
+					},
+					{
+						typeName: 'm-field',
+						name: "userName",
+						labelText: 'UserName',
+					},
+					{
+						typeName: 'm-field',
+						name: "password",
+						labelText: 'Password',
+						input: {
+							type: "password",
+							events: {
+								click: [
+									function () {
+										core.info("password input test!");
+									}
+								]
+							}
+						}
+					},
+					{
+						typeName: 'm-checkbox',
+						name: "rememberme",
+						labelText: 'RememberMe',
+					},
+				]
+			},
+			{
+				typeName: 'm-fieldset',
+				legend: {
+					textContent: 'Testeintrag2'
+				},
+				items: [
+					{
+						typeName: 'm-field',
+						name: "mandant ",
+						labelText: 'Mandant',
+						events: {
+							ready: [
+								function () {
+									this.input.focus();
+								}
+							]
+						},
+					},
+					{
+						typeName: 'm-field',
+						name: "userName",
+						labelText: 'UserName',
+					},
+					{
+						typeName: 'm-field',
+						name: "password",
+						labelText: 'Password',
+						input: {
+							type: "password",
+							events: {
+								click: [
+									function () {
+										core.info("password input test!");
+									}
+								]
+							}
+						}
+					},
+					{
+						typeName: 'm-checkbox',
+						name: "rememberme",
+						labelText: 'RememberMe',
+					},
+				]
+			},
+		]
+  	  },
+      {
+				typeName: 'm-formfooter',
+				items: [
+					{
+						typeName: 'm-button',
+						element: {
+							events: {
+								click: [function () {
+									core.info("login clicked!");
+								}]
+							},
+							textContent: 'login'
+						}
+					},
+					{
+						typeName: 'm-button',
+						element: {
+							textContent: 'cancel',
+							events: {
+								click: [
+									function () {
+										ovl.close('m-transition-fadeout', 500);
+										startApp();
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+
+		]});
+});
+</script>
+
+</body>
+</html>

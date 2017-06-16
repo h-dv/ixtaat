@@ -1,6 +1,6 @@
 {
   "name": "ixtaat",
-  "version": "0.9.1",
+  "version": "0.15.1",
   "devDependencies": {
     "font-awesome": "^4.3.0",
     "grunt": "^0.4.5",

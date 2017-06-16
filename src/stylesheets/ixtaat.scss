@@ -6,17 +6,11 @@
 @import "compass/css3/appearance";
 @import "compass/css3/transition";
 
-@import 'modular-scale';
-
 @import "normalize/import-now";
 
 @import "variables.scss";
 
-//@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,400italic,300italic,600italic,700italic,800italic);
-//@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,300,600,700,800,400italic,300italic,600italic,700italic,800italic);
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i|Ubuntu+Mono);
-//@import url(http://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Roboto+Mono);
-
+@import url(http://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Roboto+Mono|Roboto+Condensed:300,300i,400,400i,700,700i);
 
 *,
 *::before,
@@ -36,5 +30,19 @@ html * {
   color: $base-text-color;
 }
 
+@each $kvp in $colors {
 
-@import "ixtaat.grid.scss";
+  .background-color-#{nth($kvp, 1)} {
+    background-color: #{nth($kvp, 2)}
+  }
+
+  .color-#{nth($kvp, 1)} {
+    color: #{nth($kvp, 2)}
+  }
+
+  .border-color-#{nth($kvp, 1)} {
+    color: #{nth($kvp, 2)}
+  }
+}
+
+@import "ixtaat/grid.scss";

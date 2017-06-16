@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>.:: ixtaat tests::.</title>
-    <link rel="stylesheet" href="lib/qunit.css">
-    <link rel="stylesheet" href="../dist/stylesheets/ixtaat.min.css">
-    <script src="../dist/javascripts/ixtaat.js" config="debug:false"></script>
-    <script src="lib/qunit.js"></script>
+  <meta charset="utf-8">
+  <title>.:: ixtaat tests::.</title>
+  <link rel="stylesheet" href="lib/qunit.css">
+  <link rel="stylesheet" href="../dist/stylesheets/ixtaat.css">
+  <script src="../dist/javascripts/ixtaat.js" config="jsPath:'../dist/javascripts/',cssPath:'../dist/stylesheets/',debug:false"></script>
+  <script src="lib/qunit.js"></script>
 </head>
 <body>
 <div id="qunit">
@@ -16,375 +16,359 @@
 
 <script>
 
-    var i=Ixtaat;
+loader.require(['ixtaat/core', 'ixtaat/base', 'ixtaat/widget', 'ixtaat/material'], function(core, base, widget, material) {
+	test("ixtaat inheritance", function () {
 
-    var iButton  = i.Widget.Component.define({
-	    typeName: 'i-button',
-	    templateHtml: '<button class="i-button" tabindex="0">Button</button >',
+		var S = core.Class.construct({
+			b: "test"
+		});
 
-    });
+		var T = S.construct({
+			b: "test2"
+		});
 
-    var iCard = i.Widget.Composite.define({
-	    typeName: 'i-card',
-	    templateHtml: '<div class="i-card"><h3 class="i-header"></h3><div class="i-item-container"></div><div class="i-footer"></div></div>',
-	    templateSelectors: {
-		    header: " .i-header",
-		    itemContainer: " .i-item-container",
-		    footer: " .i-footer"
-	    }
-    });
+		var t = new T();
+		var s = new S();
 
+		equal(s.b, "test", "simple constructor");
+		equal(t.b, "test2", "simple inheritance");
 
-    test("ixtaat inheritance", function () {
+	});
 
-        var S = Class.define({
-            b: "test"
-        });
+	test("ixtaat mixin", function () {
 
-        var T = S.define({
-            b: "test2"
-        });
+		var M = core.Class.construct({
+			a: "mixinTest",
+			initializeInclude: function () {
+				this.test = "abc";
+			}
 
-        var t = new T();
-        var s = new S();
+		});
 
-        equal(s.b, "test", "simple constructor");
-        equal(t.b, "test2", "simple inheritance");
+		var S = core.Class.construct({
+			include: M,
+			b: "test"
+		});
 
-    });
+		var s = new S();
+		equal(s.a, "mixinTest", "self mixin");
 
-    test("ixtaat mixin", function () {
 
-        var M = Class.define({
-            a: "mixinTest",
-            initializeInclude: function () {
-                this.test = "abc";
-            }
+		var T = S.construct({
+			b: "test2"
+		});
 
-        });
 
-        var S = Class.define({
-            include: M,
-            b: "test"
-        });
+		var t = new T();
+		equal(t.a, "mixinTest", "inherited mixin");
+		equal(t.test, "abc", "inherited mixin with initializer 2");
 
-        var s = new S();
-        equal(s.a, "mixinTest", "self mixin");
+		var U = T.construct({
+			a: "test2"
+		});
 
+		var u = new U();
+		equal(u.a, "test2", "inherited overridden mixin");
+		equal(u.test, "abc", "inherited overridden mixin with initializer");
 
-        var T = S.define({
-            b: "test2"
-        });
 
+		var Mo = core.Class.construct({
+			mo: "otherMixin"
+		})
 
-        var t = new T();
-        equal(t.a, "mixinTest", "inherited mixin");
-        equal(t.test, "abc", "inherited mixin with initializer 2");
+		var O = core.Class.construct({
+			b: "test"
+		});
 
-        var U = T.define({
-            a: "test2"
-        });
+		var N = O.construct({
+			c: "mixinTest",
+			include: [M, Mo]
+		});
 
-        var u = new U();
-        equal(u.a, "test2", "inherited overridden mixin");
-        equal(u.test, "abc", "inherited overridden mixin with initializer");
+		var P = O.construct({
+			c: "mixinTest",
+		});
 
 
-        var Mo = Class.define({
-            mo: "otherMixin"
-        })
+		var n = new N();
+		equal(n.a, "mixinTest", "inherited new mixin");
+		equal(n.test, "abc", "inherited new mixin with initializer");
+		equal(n.mo, "otherMixin", "inherited new mixin with initializer ");
 
-        var O = Class.define({
-            b: "test"
-        });
+		var o = new O();
 
-        var N = O.define({
-            c: "mixinTest",
-            include: [M, Mo]
-        });
+		equal(o.a, undefined, "mixin is visible on parent");
+		equal(o.test, undefined, "inherited mixin with initializer is visible on parent");
 
-        var P = O.define({
-            c: "mixinTest",
-        });
+		var p = new P();
+		equal(p.a, undefined, "mixin is visible on family");
+		equal(p.test, undefined, "inherited mixin with initializer is visible on family");
 
 
-        var n = new N();
-        equal(n.a, "mixinTest", "inherited new mixin");
-        equal(n.test, "abc", "inherited new mixin with initializer");
-        equal(n.mo, "otherMixin", "inherited new mixin with initializer ");
+	});
 
-        var o = new O();
+	test("advanced ixtaat inheritance", function () {
 
-        equal(o.a, undefined, "mixin is visible on parent");
-        equal(o.test, undefined, "inherited mixin with initializer is visible on parent");
+		var T = core.Class.construct({
+			b: "test",
+			initialize: function (o) {
+				core.extend(this, o);
+			}
+		});
 
-        var p = new P();
-        equal(p.a, undefined, "mixin is visible on family");
-        equal(p.test, undefined, "inherited mixin with initializer is visible on family");
+		var t = new T({
+			b: "test2"
+		});
 
+		var t2 = new T({
+			b: "test3"
+		});
 
-    });
+		var U = T.construct({
+			b: "test4"
+		});
 
-    test("advanced ixtaat inheritance", function () {
+		var V = T.construct({
+			b: "test5"
+		});
 
-        var T = Class.define({
-            b: "test",
-            initialize: function (o) {
-                Ixtaat.extend(this, o);
-            }
-        });
+		var u = new U({});
 
-        var t = new T({
-            b: "test2"
-        });
+		var v = new V({});
 
-        var t2 = new T({
-            b: "test3"
-        });
+		var u1 = new U({
+			b: "test6"
+		});
 
-        var U = T.define({
-            b: "test4"
-        });
+		equal(t.b, "test2", "set property in constructor");
+		equal(t2.b, "test3", "set property in constructor");
 
-        var V = T.define({
-            b: "test5"
-        });
+		equal(u.b, "test4", "set property in extended core.Class");
+		equal(v.b, "test5", "set property in extended core.Class");
+		equal(u1.b, "test6", "set property in extended core.Class  constructor");
 
-        var u = new U({});
+	});
 
-        var v = new V({});
+	test("ixtaat observer", function () {
 
-        var u1 = new U({
-            b: "test6"
-        });
 
-        equal(t.b, "test2", "set property in constructor");
-        equal(t2.b, "test3", "set property in constructor");
+		var res = "";
 
-        equal(u.b, "test4", "set property in extended Class");
-        equal(v.b, "test5", "set property in extended Class");
-        equal(u1.b, "test6", "set property in extended Class  constructor");
+		var T = core.Class.construct({
 
-    });
+			include: base.Observer,
 
-    test("ixtaat observer", function () {
+			b: "test",
 
+			events: {
+				check: [
+					function () {
+						res = res + "AbC123";
+					}
+				]
+			},
 
-        var res = "";
+			initialize: function (options) {
+				this.initializeObserver(options);
+			}
+		});
 
-        var T = Class.define({
+		var t = new T();
+		t.fire('check');
+		equal(res, "AbC123", "simple Event");
 
-            include: Ixtaat.Observer,
+		//**********************************************************************************************************
 
-            b: "test",
+		res = "";
+		var t = new T({
+			events: {
+				check: [
+					function () {
+						res = res + "AbC123";
+					}
+				]
+			}
+		});
 
-            events: {
-                check: [
-                    function () {
-                        res = res + "AbC123";
-                    }
-                ]
-            },
+		t.fire('check');
 
-            initialize: function (options) {
-                this.initializeObserver(options);
-            }
-        });
+		equal(res, "AbC123AbC123", "simple Event  + constructor Event");
 
-        var t = new T();
-        t.fire('check');
-        equal(res, "AbC123", "simple Event");
+		//**********************************************************************************************************
 
-        //**********************************************************************************************************
+		res = "";
+		var U = T.construct({
+			events: {
+				check: [
+					function () {
+						res = res + "AbC123";
+					}
+				]
+			}
+		})
 
-        res = "";
-        var t = new T({
-            events: {
-                check: [
-                    function () {
-                    res = res + "AbC123";
-                }
-                ]
-            }
-        });
+		var u = new U();
 
-        t.fire('check');
+		u.fire('check');
 
-        equal(res, "AbC123AbC123", "simple Event  + constructor Event");
+		equal(res, "AbC123AbC123", "inherited Event ");
 
-        //**********************************************************************************************************
+		var X = T.construct({
+			events: {
+				check: [
+					function () {
+						res = res + "DeF456";
+					}
+				]
+			}
+		})
 
-        res = "";
-        var U = T.define({
-            events: {
-                check: [
-                    function () {
-                    res = res + "AbC123";
-                }
-                ]
-            }
-        })
+		res = "";
+		var u = new U();
 
-        var u = new U();
+		u.fire('check');
 
-        u.fire('check');
+		equal(res, "AbC123AbC123", "inherited Event ");
 
-        equal(res, "AbC123AbC123", "inherited Event ");
+		res = "";
+		var x = new X();
 
-        var X = T.define({
-            events: {
-                check: [
-                    function () {
-                    res = res + "DeF456";
-                }
-                ]
-            }
-        })
+		x.fire('check');
 
-        res = "";
-        var u = new U();
+		equal(res, "AbC123DeF456", "inherited Event ");
 
-        u.fire('check');
 
-        equal(res, "AbC123AbC123", "inherited Event ");
+		//**********************************************************************************************************
 
-        res = "";
-        var x = new X();
+		res = "";
+		var u = new U({
+				events: {
+					check: [
+						function () {
+							res = res + "XyZ";
+						}
+					]
+				}
+			}
+		);
 
-        x.fire('check');
+		u.fire('check');
 
-        equal(res, "AbC123DeF456", "inherited Event ");
+		equal(res, "AbC123AbC123XyZ", "inherited Event + constructor Event");
 
 
-        //**********************************************************************************************************
+		//**********************************************************************************************************
 
-        res = "";
-        var u = new U({
-                    events: {
-                        check: [
-                            function () {
-                            res = res + "XyZ";
-                        }
-                        ]
-                    }
-                }
-        );
+	});
 
-        u.fire('check');
+	test("ixtaat default values", function () {
 
-        equal(res, "AbC123AbC123XyZ", "inherited Event + constructor Event");
 
+		var res = "";
 
-        //**********************************************************************************************************
+		var T = core.Class.construct({
+			defaults: {
+				a: 1,
+				b: {c: 7}
+			}
+		});
 
-    });
+		var t = new T();
 
-    test("ixtaat default values", function () {
+		equal(t.a, 1, "simple value");
+		equal(t.b.c, 7, "deep value");
+		t.a = 5;
+		t.b.c = 8;
 
+		equal(t.a, 5, "changed value");
+		equal(t.b.c, 8, "deep changed value");
 
-        var res = "";
+		var u = new T();
 
-        var T = Class.define({
-            defaults: {
-                a: 1,
-                b: {c: 7}
-            }
-        });
+		equal(u.a, 1, "simple value after change");
+		equal(u.b.c, 7, "deep value after change");
 
-        var t = new T();
+	});
 
-        equal(t.a, 1, "simple value");
-        equal(t.b.c, 7, "deep value");
-        t.a = 5;
-        t.b.c = 8;
 
-        equal(t.a, 5, "changed value");
-        equal(t.b.c, 8, "deep changed value");
+	asyncTest("create and destroy 20 times 500 components", function (assert) {
+		var b = new material.Button({
+			renderIn: "test",
+			caption: {innerText: 'testcreate and destroy'},
+			element: {
+				events: {
+					click: [
+						function () {
+							var panel = core.create({
+								typeName: "m-card",
+								renderIn: "testArea",
 
-        var u = new T();
+								appendChild: function (i) {
+									var item = panel.addItem({
+										index: i,
+										typeName: "m-button",
+										caption: {innerText: 'testbutton'},
+										events: {
+											afterInitialize: [
+												function () {
+													var memoryEater = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													core.debug("test" + memoryEater);
 
-        equal(u.a, 1, "simple value after change");
-        equal(u.b.c, 7, "deep value after change");
+												},
+											]
+										},
+										element: {
+											events: {
+												click: function () {
+													var memoryEater5 = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
+													core.debug("test");
+												}
+											}
+										}
+									});
+									return item;
+								},
 
-    });
+								closeChilds: function () {
+									while (panel.items.length) {
+										var item = panel.items.pop();
+										item.close();
+									}
+								}
+							});
 
-
-    asyncTest("create and destroy 100 components", function (assert) {
-        var b = new iButton({
-            renderIn: "test",
-            caption: {innerText: 'testcreate and destroy'},
-            element: {
-                events: {
-                    click: [
-                        function () {
-                        var panel = Ixtaat.create({
-                            typeName: "i-card",
-                            renderIn: "testArea",
-
-                            appendChild: function (i) {
-                                var item = panel.addItem({
-                                    index: i,
-                                    typeName: "i-button",
-                                    caption: {innerText: 'testbutton'},
-                                    events: {
-                                        afterInitialize: [
-                                            function () {
-                                            var memoryEater = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            memoryEater += "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                            Ixtaat.debug("test" + memoryEater);
-
-                                        },
-                                        ]
-                                    },
-                                    element: {
-                                        events: {
-                                            click: function () {
-                                                var memoryEater5 = "lkfjdlkjfösdajlökjfölskajflökjflkjdsflkjfjsdklajflsdjsdjfsdjslfhflffsafdsaffasdfsadkal";
-                                                Ixtaat.debug("test");
-                                            }
-                                        }
-                                    }
-                                });
-                                return item;
-                            },
-
-                            closeChilds: function () {
-                                while (panel.items.length) {
-                                    var item = panel.items.pop();
-                                    item.close();
-                                }
-                            }
-                        });
-
-                        for (var i = 1; i < 500; i++) {
+							for (var i = 1; i < 500; i++) {
 //                window.setTimeout(function(){
-                            panel.appendChild(i).fire('click');
+								panel.appendChild(i).fire('click');
 //                }, 0);//document.setTimeout("", 100);;
-                        }
+							}
 
-                        ok(document.getElementById(panel.uuid), "panel exists")
+							ok(document.getElementById(panel.uuid), "panel exists")
 
-                        panel.close();
+							panel.close();
 
-                        ok(!document.getElementById(panel.uuid), "panel removed correct")
-                    }
-                    ]
-                }
-            }
-        });
+							ok(!document.getElementById(panel.uuid), "panel removed correct")
+						}
+					]
+				}
+			}
+		});
 
-        for (var i = 1; i < 20; i++) {
+		for (var i = 1; i < 20; i++) {
 //    window.setTimeout(function(){
-            Ixtaat.triggerEvent(b.element, 'click');//.fire( "click" );
+			widget.triggerEvent(b.element, 'click');//.fire( "click" );
 //    }, 0);//document.setTimeout("", 100);;
-        }
-    });
+		}
+	});
 
-    //  });
+	//  });
+})
+
 </script>
 
 

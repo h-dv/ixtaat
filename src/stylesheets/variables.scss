@@ -1,3 +1,5 @@
+@import 'modularscale';
+
 
 
 //****************************************************************************************************
@@ -21,18 +23,26 @@ $gray-6-color: #181917;
 
 
 $main-color: $blue-color ;
+$main-second-color: #fff;
+
 $main-inverse-color: #f8f8f8 ;
 
 $base-text-color:  $gray-6-color;
 
 
-$form-color:  $gray-5-color;
-$form-line-color:  #ffffff;
+$form-background-color: lighten($gray-1-color, 20); //lighten(#D7B150,25);//#f1f4fc;//lighten($yellow-color,30);//lighten($gray-1-color, 20);
+$form-active-background-color: lighten(#F5FE4B,25);
+
+$form-color:  $gray-4-color;
+$form-line-color:  $gray-2-color;;
 $form-active-color:  $gray-6-color;
 $form-line-active-color:  $main-color;
-$form-inactive-color:  $gray-3-color;
-$form-line-inactive-color:  $gray-3-color;
-$form-background-color:  lighten($gray-1-color,15);//#f1f4fc;//lighten($yellow-color,30);//lighten($gray-1-color, 20);
+$form-inactive-color:  $gray-1-color;
+$form-line-inactive-color:  lighten($gray-1-color, 30);
+$form-fieldset-color:  $gray-3-color;
+$form-action-color:  darken($form-background-color, 55);
+
+
 
 //$card-header-color : lighten($main-color,10);
 //$card-header-inverse-color : #ffffff;
@@ -69,6 +79,7 @@ $colors:  (
                 ("main-inverse", $main-inverse-color),
                 ("form", $form-color),
                 ("form-line", $form-line-color),
+                ("form-action", $form-action-color),
                 ("form-active", $form-active-color),
                 ("form-line-active", $form-line-active-color),
                 ("form-inactive", $form-inactive-color),
@@ -76,30 +87,20 @@ $colors:  (
                 ("form-background", $form-background-color),
                 ("card-header", $card-header-color),
                 ("card-header-inverse", $card-header-inverse-color),
-                ("card-color", $card-color),
-                ("card-inverse-color", $card-inverse-color),
+                ("card", $card-color),
+                ("card-inverse", $card-inverse-color),
 );
 
 
 
+$main-font: "Roboto Condensed"; $main-font-fixed: "Roboto Mono";
+//$main-font: "Ubuntu"; $main-font-fixed: "Ubuntu Mono";
+//$main-font: "Roboto Condensed"; $main-font-fixed: "Oxygen Mono";
 
-@each $kvp in $colors {
-
-  .background-color-#{nth($kvp, 1)} {
-    background-color: #{nth($kvp, 2)}
-  }
-
-  .color-#{nth($kvp, 1)} {
-    color: #{nth($kvp, 2)}
-  }
-
-  .border-color-#{nth($kvp, 1)} {
-    color: #{nth($kvp, 2)}
-  }
-}
-
-//$main-font: "Roboto"; $main-font-fixed: "Roboto Mono";
-$main-font: "Ubuntu"; $main-font-fixed: "Ubuntu Mono";
+//@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,400italic,300italic,600italic,700italic,800italic|Oxygen+Mono|Roboto+Condensed:300,300i,400,400i,700,700i);
+//@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,300,600,700,800,400italic,300italic,600italic,700italic,800italic);
+//@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i|Ubuntu+Mono);
+ 
 
 // grid variables
 $grid-columns: 12;

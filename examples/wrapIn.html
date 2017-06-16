@@ -4,18 +4,19 @@
     <meta charset="utf-8">
     <title>.:: ixtaat framework ::.</title>
 
-    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='../dist/stylesheets/ixtaat.css' type='text/css' media='all' />
     <meta name="viewport" content="width=device-width">
 </head>
 
 <body>
 <div id="main">This is a custom text</div>
-<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="path:'debug: true"></script>
+<script src="../dist/javascripts/ixtaat.js" type="text/javascript" config="jsPath:'../dist/javascripts/', debug: true"></script>
 <script>
 
-  var i = Ixtaat;
 
-  var test =i.create({
+loader.require(['ixtaat/core', 'ixtaat/widget'], function(core, widget) {
+
+  var test = core.create({
 
     typeName: 'i-component',
 
@@ -26,15 +27,17 @@
       wrapIn: '.wrapIn'
     },
 
+    //renderIn: 'main',
+
     worldLink:{
       style: {
-        color: i.Colors.red
+        color: widget.Colors.red
       },
       events: {
         click: [
         function(e)  {
           this.worldLink.innerText = 'clicked!';
-          this.worldLink.style.color= i.Colors.green;
+          this.worldLink.style.color= widget.Colors.green;
           this.element.style.padding = "25px";
         }
        ]
@@ -42,6 +45,8 @@
     }
   });
   test.render('main', {wrapIn: 'wrapIn'})
+});
+
 </script>
 
 </body>

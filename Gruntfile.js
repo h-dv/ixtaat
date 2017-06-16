@@ -14,8 +14,15 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
  // grunt.loadNpmTasks('grunt-svgstore');
 
+  var railsPath = grunt.option('railsPath');
 
   var target = "dist";
+
+  if (!railsPath) {
+//    railsPath = "../../PartViewer/assets/"
+    railsPath = "../davelon-core/app/assets/"
+//    railsPath = "../../node/pingru/public/"
+  }
 
   grunt.initConfig({
     jsdoc: {
@@ -29,19 +36,14 @@ module.exports = function (grunt) {
       }
     },
 
-
     pkg: grunt.file.readJSON('package.json'),
 
     concat: {
       ixtaat: {
         src: [
-          'src/javascripts/ixtaat.base.js',
-          'src/javascripts/ixtaat.extensions.js',
-          'src/javascripts/ixtaat.objects.js',
-          'src/javascripts/ixtaat.baseobjects.js',
-          'src/javascripts/ixtaat.widgets.js',
+          'src/javascripts/ixtaat.js',
         ],
-        dest: 'dist/javascripts/ixtaat.js',
+        dest: 'dist/javascripts/ixtaat.full.js',
       },
 
       i18n : {
@@ -49,7 +51,22 @@ module.exports = function (grunt) {
           'dist/javascripts/i18n/de.js': 'src/javascripts/i18n/de.js'
         }
       },
-
+      base: {
+        src: 'src/javascripts/ixtaat/base.js',
+        dest: 'dist/javascripts/ixtaat/base.full.js',
+      },
+      widget: {
+        src: 'src/javascripts/ixtaat/widget.js',
+        dest: 'dist/javascripts/ixtaat/widget.full.js',
+      },
+      material: {
+        src: 'src/javascripts/ixtaat/material.js',
+        dest: 'dist/javascripts/ixtaat/material.full.js',
+      },
+      table: {
+        src: 'src/javascripts/ixtaat/table.js',
+        dest: 'dist/javascripts/ixtaat/table.full.js',
+      },
     },
     sass: {
       dist: {
@@ -58,7 +75,9 @@ module.exports = function (grunt) {
           compass: true
         },
         files: {
-          "dist/stylesheets/ixtaat.css": "src/stylesheets/ixtaat.scss",
+          "dist/stylesheets/ixtaat.full.css": "src/stylesheets/ixtaat.scss",
+          "dist/stylesheets/ixtaat/table.full.css": "src/stylesheets/ixtaat/table.scss",
+          "dist/stylesheets/ixtaat/material.full.css": "src/stylesheets/ixtaat/material.scss"
         }
       },
       dev: {
@@ -67,7 +86,9 @@ module.exports = function (grunt) {
           compass: true
         },
         files: {
-          "dist/stylesheets/ixtaat.min.css": "src/stylesheets/ixtaat.scss",
+          "dist/stylesheets/ixtaat.css": "src/stylesheets/ixtaat.scss",
+          "dist/stylesheets/ixtaat/table.css": "src/stylesheets/ixtaat/table.scss",
+          "dist/stylesheets/ixtaat/material.css": "src/stylesheets/ixtaat/material.scss"
         }
       },
     },
@@ -89,8 +110,12 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          "dist/javascripts/ixtaat.min.js": ["dist/javascripts/ixtaat.js"],
-          "dist/javascripts/i18n/de.min.js": ["dist/javascripts/i18n/de.js"]
+          "dist/javascripts/ixtaat.js": ["dist/javascripts/ixtaat.full.js"],
+          "dist/javascripts/ixtaat/base.js": ["dist/javascripts/ixtaat/base.full.js"],
+          "dist/javascripts/ixtaat/widget.js": ["dist/javascripts/ixtaat/widget.full.js"],
+          "dist/javascripts/ixtaat/table.js": ["dist/javascripts/ixtaat/table.full.js"],
+          "dist/javascripts/ixtaat/material.js": ["dist/javascripts/ixtaat/material.full.js"],
+          "dist/javascripts/i18n/de.js": ["dist/javascripts/i18n/de.full.js"]
         }
       }
     },
@@ -101,10 +126,30 @@ module.exports = function (grunt) {
           // includes files within path
           {
             expand: true,
-            flatten: true,
-            src: ['assets/fonts/*'],
-            dest: 'dist/stylesheets/',
+            cwd: 'dist',
+            src: 'assets/fonts/*',
+            dest: 'stylesheets/ixtaat/',
             filter: 'isFile'
+          },
+        ]
+      },
+      rails: {
+        files: [
+          {
+            expand: true,
+//            flatten: true,
+            cwd: 'dist',
+            src: 'javascripts/**',
+            dest: railsPath ,
+//            filter: 'isFile'
+          },
+          {
+            expand: true,
+//            flatten: true,
+            cwd: 'dist',
+            src:  'stylesheets/**',
+            dest: railsPath ,
+//            filter: 'isFile'
           },
         ]
       }
@@ -141,15 +186,31 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: "src/javascripts/**/*.js",
-        tasks: ["concat", "uglify:*"]
+        tasks: ["concat", "uglify:*", "copy:rails"]
       },
 
       scss: {
         files: "src/stylesheets/**/*.scss",
-        tasks: ["sass:*"]
+        tasks: ["sass:*", "copy:rails"]
       }
     }
   });
+
+
+	var gruntCopy = grunt.config.get('copy');
+	for (var item in gruntCopy) {
+		var files = gruntCopy[item].files;
+		for (var i = files.length - 1; i >= 0; i--) {
+			var fileItem = files[i];
+			if (fileItem.dest instanceof Array) {
+				files.splice(i, 1);
+				for (var j = 0; j < fileItem.dest.length; j++) {
+					files.push({src: fileItem.src, dest: fileItem.dest[j]})
+				}
+			}
+		}
+	}
+	grunt.config.set('copy', gruntCopy);
 
   grunt.registerTask("pack", ["concat", "sass:*", "uglify:*", "copy"]);
   grunt.registerTask("default", ["dev"]);
