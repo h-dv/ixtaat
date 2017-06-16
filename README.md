@@ -6,20 +6,29 @@ It includes functionality for object inheritance, mixins, class manipulation and
 The most important part of it is the Idea of linked Selectors. You can easily access 
 DOM-Elements and Properties like simple JS-Properties without GC-Problems, without the complexity of shadow DOM 
 or custom template languages. Just pure JS with some simple and smart tools.
+Take a look at the examples.
 
 ## Base
-the only Namespace used is Ixtaat. You can use different frameworks in Combination with it or
-you can do something like 
+there is a global AMD-Loader registered:
+
 ```javascript
-var i = Ixtaat;
+loader.define('myapp', ['ixtaat.core'], function(core) {
+...
+})
 ```
-to prevent typing.
+and 
+
+```javascript
+loader.require(['ixtaat.core'], function(core) {
+...
+})
+```
 
 ## Object Handling
 ### Class definition
 
 ```javascript
-var Foo = Ixtaat.define({
+var Foo = core.define({
     
     defaults: {
         /**
@@ -48,7 +57,7 @@ var Bar = Foo.define({
 ### Mixins
 
 ```javascriptvar 
-Mixin =Ixtaat.define({
+Mixin = core.define({
     someFunction: function() {
         //...
     }
@@ -67,7 +76,7 @@ b.someFunction();
 Widget is the Base Class of a UI-Component. 
 
 ```javascript
-var CTest = Ixtaat.Widget.Component.define({
+var CTest = widget.define({
     templateHtml: '<div><div class="title"> </div> <a href="#"> </a></div>'
     templateSelectors: {
         title: '.title',
@@ -135,7 +144,7 @@ removed on Component.close() automaticly.
 var c= new CTest({
     title: {
         style: {
-            color: Ixtaat.Colors.blue,
+            color: widget.Colors.blue,
             fontWeight: 700
         },
         textContent : 'Hello ',
@@ -171,7 +180,6 @@ Any Comments and Hints are welcome.
 ## TODO
 + Add Dokumentation
 + Add Tests
-+ create Base Components
 
 
 
