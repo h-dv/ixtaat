@@ -14,15 +14,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
  // grunt.loadNpmTasks('grunt-svgstore');
 
-  var railsPath = grunt.option('railsPath');
-
   var target = "dist";
-
-  if (!railsPath) {
-//    railsPath = "../../PartViewer/assets/"
-    railsPath = "../davelon-core/app/assets/"
-//    railsPath = "../../node/pingru/public/"
-  }
 
   grunt.initConfig({
     jsdoc: {
@@ -133,26 +125,6 @@ module.exports = function (grunt) {
           },
         ]
       },
-      rails: {
-        files: [
-          {
-            expand: true,
-//            flatten: true,
-            cwd: 'dist',
-            src: 'javascripts/**',
-            dest: railsPath ,
-//            filter: 'isFile'
-          },
-          {
-            expand: true,
-//            flatten: true,
-            cwd: 'dist',
-            src:  'stylesheets/**',
-            dest: railsPath ,
-//            filter: 'isFile'
-          },
-        ]
-      }
     },
 
     npmcopy: {
@@ -186,12 +158,12 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: "src/javascripts/**/*.js",
-        tasks: ["concat", "uglify:*", "copy:rails"]
+        tasks: ["concat", "uglify:*"]
       },
 
       scss: {
         files: "src/stylesheets/**/*.scss",
-        tasks: ["sass:*", "copy:rails"]
+        tasks: ["sass:*"]
       }
     }
   });
