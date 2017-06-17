@@ -12,7 +12,7 @@ Take a look at the examples.
 there is a global AMD-Loader registered:
 
 ```javascript
-loader.define('myapp', ['ixtaat/core'], function(core) {
+loader.define('myapp', ['ixtaat/core'],['ixtaat/base'],['ixtaat/widget'], function(core, base, widget) {
 ...
 })
 ```
@@ -63,7 +63,7 @@ Mixin = core.define({
     }
 })
 
-var Foo = Ixtaat.define({
+var Foo = core.define({
     include: Mixin   
 });
 
@@ -121,7 +121,7 @@ and of course you can preset style too.
 var c= new CTest({
     title: {
         style: {
-            color: Ixtaat.Colors.blue,
+            color: widget.Colors.blue,
             fontWeight: 700
         },
         textContent : 'Hello '
