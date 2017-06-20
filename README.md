@@ -1,3 +1,5 @@
+__**Important Note: THIS IS BETA, MANY THINGS ARE NOT THOROUGHLY TESTET !!!**__
+
 # ixtaat component architecture
 
 this is a small js framework with some smart tools to build a clean and simple component architecture.
